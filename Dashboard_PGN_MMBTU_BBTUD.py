@@ -975,27 +975,23 @@ if dashboard_choice == "Dashboard Usage":
 
                 # Plot
                 fig = go.Figure()
-                # Jika 'All' -> break down Weekday vs Weekend
+                # Single line for all data points
                 if selected_customer == 'All':
-                    weekday_df = filtered_df[filtered_df['Kategori'] == 'Weekday']
-                    weekday_usage = weekday_df.groupby('Tanggal')['Penggunaan'].sum().reset_index()
+                    daily_usage = filtered_df.groupby('Tanggal')['Penggunaan'].sum().reset_index()
                     fig.add_trace(go.Scatter(
-                        x=weekday_usage['Tanggal'], y=weekday_usage['Penggunaan'],
-                        mode='lines+markers', name='Weekday'
-                    ))
-
-                    weekend_df = filtered_df[filtered_df['Kategori'] == 'Weekend']
-                    weekend_usage = weekend_df.groupby('Tanggal')['Penggunaan'].sum().reset_index()
-                    fig.add_trace(go.Scatter(
-                        x=weekend_usage['Tanggal'], y=weekend_usage['Penggunaan'],
-                        mode='lines+markers', name='Weekend'
+                        x=daily_usage['Tanggal'], 
+                        y=daily_usage['Penggunaan'],
+                        mode='lines+markers', 
+                        name='Daily Usage'
                     ))
                     fig.update_layout(title=f"Penggunaan Harian - All Pelanggan (Panel {panel_key})")
                 else:
-                    # Pelanggan tertentu
+                    # Specific customer
                     fig.add_trace(go.Scatter(
-                        x=filtered_df['Tanggal'], y=filtered_df['Penggunaan'],
-                        mode='lines+markers', name=selected_customer
+                        x=filtered_df['Tanggal'], 
+                        y=filtered_df['Penggunaan'],
+                        mode='lines+markers', 
+                        name=selected_customer
                     ))
                     fig.update_layout(title=f"Penggunaan Harian - {selected_customer} (Panel {panel_key})")
 
