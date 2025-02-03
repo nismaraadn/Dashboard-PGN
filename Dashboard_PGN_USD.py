@@ -963,34 +963,26 @@ if dashboard_choice == "Dashboard Usage USD":
 
                 # Plot
                 fig = go.Figure()
-                # Single line for all data points
-                if selected_customer == 'All':
-                    daily_usage = filtered_df.groupby('Tanggal')['Penggunaan'].sum().reset_index()
-                    fig.add_trace(go.Scatter(
-                        x=daily_usage['Tanggal'], 
-                        y=daily_usage['Penggunaan'],
-                        mode='lines+markers', 
-                        name='Daily Usage'
-                    ))
-                    fig.update_layout(title=f"Penggunaan Harian - All Pelanggan (Panel {panel_key})")
-                else:
-                    # Specific customer
-                    fig.add_trace(go.Scatter(
-                        x=filtered_df['Tanggal'], 
-                        y=filtered_df['Penggunaan'],
-                        mode='lines+markers', 
-                        name=selected_customer
-                    ))
-                    fig.update_layout(title=f"Penggunaan Harian - {selected_customer} (Panel {panel_key})")
 
+                # Agregasi penggunaan harian tanpa memisahkan weekday dan weekend
+                daily_usage = filtered_df.groupby('Tanggal')['Penggunaan'].sum().reset_index()
+                fig.add_trace(go.Scatter(
+                    x=daily_usage['Tanggal'], 
+                    y=daily_usage['Penggunaan'],
+                    mode='lines+markers', 
+                    name='Daily Usage'
+                ))
+
+                # Judul dan layout grafik
                 fig.update_layout(
+                    title=f"Penggunaan Harian - {selected_customer} (Panel {panel_key})" if selected_customer != 'All' else "Penggunaan Harian - Semua Pelanggan",
                     xaxis_title="Tanggal",
-                    yaxis_title=f"Penggunaan ({unit_label})",
+                    yaxis_title=f"Penggunaan (USD)",
                     template="plotly_white",
                     height=600
                 )
                 st.plotly_chart(fig, use_container_width=True)
-
+                
                 # Statistik
                 total_val = filtered_df['Penggunaan'].sum()
                 avg_val   = filtered_df['Penggunaan'].mean()
