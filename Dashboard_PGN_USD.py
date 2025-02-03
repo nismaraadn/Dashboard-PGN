@@ -858,7 +858,7 @@ if dashboard_choice == "Dashboard Usage USD":
 
             # Tidak perlu scroll banyak karena visualisasi diatur dalam baris dan kolom
 
-        # -------------------------------------------------
+# -------------------------------------------------
         # 2. TAB: DAILY USAGE
         # -------------------------------------------------
         with tabs_usage[1]:
@@ -878,7 +878,6 @@ if dashboard_choice == "Dashboard Usage USD":
 
                 # Set USD as the default unit
                 selected_unit = "USD"
-                unit_label = selected_unit  # Added to resolve unit_label undefined error
 
                 # ======================================
                 # BARIS 1: 5 DROPDOWN (Nama Pelanggan, CM, Segment, Ketentuan, Kepmen)
@@ -986,7 +985,7 @@ if dashboard_choice == "Dashboard Usage USD":
 
                 fig.update_layout(
                     xaxis_title="Tanggal",
-                    yaxis_title=f"Penggunaan ({unit_label})",
+                    yaxis_title=f"Penggunaan ({selected_unit})",
                     template="plotly_white",
                     height=600
                 )
@@ -1086,6 +1085,7 @@ if dashboard_choice == "Dashboard Usage USD":
             else:
                 # Mode normal, satu panel
                 create_usage_panel('Single', st.session_state["df_long_daily_usage"])
+
 # -------------------------------------------------
         # 3. TAB: WEEKEND vs WEEKDAY
         # -------------------------------------------------
